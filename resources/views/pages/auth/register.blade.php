@@ -7,7 +7,7 @@
 
         <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
             @csrf
-            <!-- Name -->
+
             <flux:input
                 name="name"
                 :label="__('Name')"
@@ -19,7 +19,6 @@
                 :placeholder="__('Full name')"
             />
 
-            <!-- Email Address -->
             <flux:input
                 name="email"
                 :label="__('Email address')"
@@ -30,7 +29,12 @@
                 placeholder="email@example.com"
             />
 
-            <!-- Password -->
+            <flux:select name="gender" :label="__('Gender')" required>
+                <flux:select.option value="" disabled selected>{{ __('Select gender') }}</flux:select.option>
+                <flux:select.option value="M" :selected="old('gender') === 'M'">{{ __('Male') }}</flux:select.option>
+                <flux:select.option value="F" :selected="old('gender') === 'F'">{{ __('Female') }}</flux:select.option>
+            </flux:select>
+
             <flux:input
                 name="password"
                 :label="__('Password')"
@@ -41,7 +45,6 @@
                 viewable
             />
 
-            <!-- Confirm Password -->
             <flux:input
                 name="password_confirmation"
                 :label="__('Confirm password')"
@@ -52,11 +55,9 @@
                 viewable
             />
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
-                    {{ __('Create account') }}
-                </flux:button>
-            </div>
+            <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
+                {{ __('Create account') }}
+            </flux:button>
         </form>
 
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">

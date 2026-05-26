@@ -21,6 +21,7 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             ...$this->profileRules(),
+            'gender' => ['required', 'in:M,F'],
             'password' => $this->passwordRules(),
         ])->validate();
 
@@ -28,6 +29,8 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
+            'gender' => $input['gender'],
+            'admin' => false,
         ]);
     }
 }

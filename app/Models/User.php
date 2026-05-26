@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['name', 'email', 'password', 'admin', 'type', 'gender', 'photo_url'])]
+#[Fillable(['name', 'email', 'password', 'admin', 'gender', 'photo_url'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -51,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->photo_url && Storage::disk('public')->exists("photos/{$this->photo_url}")) {
             return asset("storage/photos/{$this->photo_url}");
         } else {
-            return asset("storage/photos/anonymous.png");
+            return asset('storage/photos/anonymous.png');
         }
     }
 
@@ -63,5 +63,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function student(): HasOne
     {
         return $this->hasOne(Student::class);
+    }
+
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
     }
 }
