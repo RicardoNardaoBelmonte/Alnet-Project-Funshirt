@@ -1,17 +1,43 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\DisciplineController;
-use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AdministrativeController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\CartController;
+use App\Models\Category;
 use App\Models\Student;
+use App\Models\Tshirt;
+use Illuminate\Support\Facades\Route;
 
 /* ----- PUBLIC ROUTES ----- */
-Route::view('/', 'home')->name('home');
+Route::get('/', function () {
+    $categories = Category::all()->map(fn ($cat) => [
+        'id' => $cat->id,
+        'name' => $cat->name,
+        'image_url' => $cat->image_url,
+        'url' => route('categories.show', $cat),
+    ]);
+
+    $base = Tshirt::with(['category', 'colors'])->whereNull('customer_id');
+
+    return view('home', [
+        'categories' => $categories,
+        'bestSellers' => (clone $base)->where('is_best_seller', true)->take(8)->get(),
+        'recentlyReleased' => (clone $base)->orderByDesc('created_at')->take(8)->get(),
+    ]);
+})->name('home');
+
+Route::get('/categories', [CategoryController::class, 'index'])
+    ->name('categories.index');
+Route::get('/categories/{category}', [CategoryController::class, 'show'])
+    ->name('categories.show');
+
+Route::view('/about', 'pages.about')->name('about');
+Route::view('/support', 'pages.support')->name('support');
 
 Route::get('courses/showcase', [CourseController::class, 'showCase'])
     ->name('courses.showcase');
@@ -63,7 +89,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     ->name('students.edit')
     //     ->can('update', 'student');
 
-
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
         ->name('administratives.photo.destroy');
     Route::resource('administratives', AdministrativeController::class);
@@ -82,12 +107,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // CART Related Routes - these cart routes can be used by anonymous users,
-//so they are outside the middleware group that requires authentication
+// so they are outside the middleware group that requires authentication
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('cart/{discipline}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::delete('cart/{discipline}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
-
 
 /* ----- OTHER PUBLIC ROUTES ----- */
 /* ----- these routes should be positioned after related routes to avoid conflicts ----- */

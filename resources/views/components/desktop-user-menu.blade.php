@@ -49,13 +49,6 @@
         <flux:menu.separator />
 
         <flux:menu.radio.group>
-            <flux:menu.item :href="match(auth()->user()->type) {
-                    'S' => route('students.show', ['student' => auth()->user()->student]),
-                    'T' => route('teachers.show', ['teacher' => auth()->user()->teacher]),
-                    'A' => route('administratives.show', ['administrative' => auth()->user()])
-                }" icon="document-text" wire:navigate>
-                My Record
-            </flux:menu.item>
             <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                 {{ __('Settings') }}
             </flux:menu.item>
