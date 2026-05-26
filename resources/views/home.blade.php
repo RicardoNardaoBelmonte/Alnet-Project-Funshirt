@@ -1,56 +1,148 @@
-<x-layouts::main-content title="Department of Computer Engineering" heading="Introduction">
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="my-4 p-6 bg-zinc-50   border border-zinc-200 dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
-            <h3 class="pb-3 font-semibold text-lg text-gray-800 dark:text-gray-200 leading-5">
-                Department of Computer Engineering
-            </h3>
-            <p class="py-3 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">
-                The Department of Computer Engineering was formally created in 1997 with the approval of
-                the Statutes of the
-                School of Technology and Management (Escola Superior de Tecnologia e Gestão - ESTG),
-                but its origins lie in the area of Computer Science that has existed at ESTG
-                since it began operating in the 1989/90 academic year.
+<x-layouts::app.header>
+
+{{-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ --}}
+<section class="relative overflow-hidden" style="min-height: 75vh;">
+
+    {{-- Background image --}}
+    <div class="absolute inset-0">
+        <img
+            src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=1920&h=1080&fit=crop&auto=format&q=80"
+            alt=""
+            class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/70 to-zinc-950/20"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-zinc-900 dark:from-zinc-900 to-transparent"></div>
+    </div>
+
+    {{-- Content --}}
+    <div class="relative z-10 flex items-center h-full max-w-7xl mx-auto px-6 py-28 md:py-36">
+        <div class="max-w-2xl">
+            <p class="text-amber-400 text-xs font-bold tracking-[0.25em] uppercase mb-5">
+                Custom T-Shirts
             </p>
-            <p class="py-3 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">
-                The Department of Computer Engineering is a functional unit of the ESTG to which
-                teachers,
-                laboratories and support services related to the teaching of
-                computer engineering are assigned.
-                The Department of Computer Engineering is responsible for a number of undergraduate,
-                master's and postgraduate
-                courses, as well as the recently created Higher Professional Technical Courses. It is
-                also responsible for teaching
-                various curricular units in the area of Computer Science that are part of the curriculum
-                of other courses taught at
-                ESTG. The activities carried out by the the Department of Computer Engineering follow
-                the strategic guidelines
-                defined by ESTG's bodies (Scientific Council, Pedagogical Council and Management).
+            <h1 class="text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none mb-6 tracking-tight">
+                Fun<span class="text-amber-400">Shirt</span>
+            </h1>
+            <p class="text-lg md:text-xl text-zinc-300 leading-relaxed mb-10 max-w-lg">
+                Wear your identity. Unique custom t-shirts for streetwear, anime,
+                sports and celebrity culture.
             </p>
-            <p class="py-3 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">
-                The Master's course in Computer Engineering - Mobile Computing has been recognized by
-                ENAEE (European Network for
-                Accreditation of Engineering Education) through the award of the EUR-ACE® Quality Mark.
-                The distinction places the
-                quality of teaching in this course at the Polytechnic of Leiria at the level of the best
-                European universities and
-                polytechnics, and confirms the international dimension of the School's diplomas,
-                encouraging greater acceptance of
-                engineers graduating from the Polytechnic of Leiria throughout Europe.
-            </p>
-        </div>
-        <div class="my-8 p-6 bg-zinc-50   border border-zinc-200 dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
-            <h3 class="pb-3 font-semibold text-lg text-gray-800 dark:text-gray-200 leading-5">
-                Organization
-            </h3>
-            <p class="py-3 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">
-                The organization of the Department of Computer Engineering is defined by the ESTG
-                statutes as follows:
-            <ul class="list-disc ms-12">
-                <li class="py-1 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">Coordinator;</li>
-                <li class="py-1 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">Department Council;</li>
-                <li class="py-1 text-sm font-light leading-7 text-gray-700 dark:text-gray-300">Plenary.</li>
-            </ul>
-            </p>
+            <div class="flex flex-wrap gap-4">
+                <a
+                    href="#categories"
+                    class="bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold py-4 px-10 rounded-full text-base transition-colors"
+                >
+                    Shop Now
+                </a>
+                @guest
+                    <a
+                        href="{{ route('register') }}"
+                        class="text-white font-bold py-4 px-10 rounded-full text-base transition-colors"
+                    >
+                        Create Account
+                    </a>
+                @endguest
+            </div>
         </div>
     </div>
-</x-layouts::main-content>
+
+</section>
+
+{{-- ═══════════════════════════════════════════════════════════
+     CATEGORIES
+═══════════════════════════════════════════════════════════ --}}
+<section id="categories" class="bg-zinc-50 dark:bg-zinc-900 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <header class="mb-16">
+            <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">Browse</p>
+            <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Shop by Category</h2>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            @foreach($categories as $category)
+            <a
+                href="{{ $category['url'] }}"
+                class="group relative rounded-2xl overflow-hidden"
+                style="aspect-ratio: 3/4;"
+            >
+                <img
+                    src="{{ $category['image_url'] }}"
+                    alt="{{ $category['name'] }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 class="text-white font-bold text-base leading-tight">{{ $category['name'] }}</h3>
+                    <span class="text-amber-400 text-xs mt-1 inline-block">Browse →</span>
+                </div>
+            </a>
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+{{-- ═══════════════════════════════════════════════════════════
+     BEST SELLERS
+═══════════════════════════════════════════════════════════ --}}
+<section class="bg-white dark:bg-zinc-800 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <header class="mb-16">
+            <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">Top Picks</p>
+            <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Best Sellers</h2>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach($bestSellers as $tshirt)
+                @include('partials.tshirt-card', ['tshirt' => $tshirt])
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+{{-- ═══════════════════════════════════════════════════════════
+     RECENTLY RELEASED
+═══════════════════════════════════════════════════════════ --}}
+<section class="bg-zinc-50 dark:bg-zinc-900 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <header class="mb-16">
+            <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">New Arrivals</p>
+            <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Recently Released</h2>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach($recentlyReleased as $tshirt)
+                @include('partials.tshirt-card', ['tshirt' => $tshirt])
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+{{-- ═══════════════════════════════════════════════════════════
+     FOOTER CTA
+═══════════════════════════════════════════════════════════ --}}
+@guest
+<section class="bg-zinc-50 dark:bg-zinc-900 py-16">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+        <h2 class="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white mb-3">Want something unique?</h2>
+        <p class="text-zinc-600 dark:text-zinc-400 mb-8 text-base">
+            Create your own custom t-shirt design and stand out from the crowd.
+        </p>
+        <a
+            href="{{ route('register') }}"
+            class="inline-block bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold py-3 px-10 rounded-full transition-colors"
+        >
+            Get Started
+        </a>
+    </div>
+</section>
+@endguest
+
+</x-layouts::app.header>
