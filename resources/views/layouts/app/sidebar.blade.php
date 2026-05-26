@@ -165,12 +165,17 @@
 
                     <flux:menu.separator />
 
+                    @php
+                        $myRecordRoute = match(auth()->user()->type) {
+                            'S' => auth()->user()->student ? route('students.show', ['student' => auth()->user()->student]) : route('profile.edit'),
+                            'T' => auth()->user()->teacher ? route('teachers.show', ['teacher' => auth()->user()->teacher]) : route('profile.edit'),
+                            'A' => route('administratives.show', ['administrative' => auth()->user()]),
+                            default => route('profile.edit'),
+                        };
+                    @endphp
+
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="match(auth()->user()->type) {
-                                'S' => route('students.show', ['student' => auth()->user()->student]),
-                                'T' => route('teachers.show', ['teacher' => auth()->user()->teacher]),
-                                'A' => route('administratives.show', ['administrative' => auth()->user()])
-                            }" icon="document-text" wire:navigate>
+                        <flux:menu.item :href="$myRecordRoute " icon="document-text" wire:navigate>
                             My Record
                         </flux:menu.item>
                         <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
