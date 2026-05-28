@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('image_url')->nullable();
             $table->decimal('price', 10, 2);
+            $table->unsignedInteger('sales_count')->default(0);
             $table->text('custom')->nullable();
             $table->softDeletes();
             $table->timestamps();
