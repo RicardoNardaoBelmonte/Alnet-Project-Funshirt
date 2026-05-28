@@ -115,7 +115,7 @@
                 <flux:profile
                     :initials="auth()->user()->initials()"
                     icon-trailing="chevron-down"
-                    :avatar="auth()->user()->photo_url ? auth()->user()->photo_full_url : null"
+                    :avatar="auth()->user()->photo_full_url"
                 />
 
                 <flux:menu>
@@ -125,7 +125,7 @@
                                 <flux:avatar
                                     :name="auth()->user()->name"
                                     :initials="auth()->user()->initials()"
-                                    :src="auth()->user()->photo_url ? auth()->user()->photo_full_url : null"
+                                    :src="auth()->user()->photo_full_url"
                                 />
                                 <div class="grid flex-1 text-start text-sm leading-tight">
                                     <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
