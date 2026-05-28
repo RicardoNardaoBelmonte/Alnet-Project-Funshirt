@@ -56,30 +56,70 @@
 <section id="categories" class="bg-zinc-50 dark:bg-zinc-900 py-20">
     <div class="max-w-7xl mx-auto px-6">
 
-        <header class="mb-16">
-            <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">Browse</p>
-            <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Shop by Category</h2>
-        </header>
+        <div
+            x-data="{
+                atStart: true,
+                atEnd: false,
+                prev() { $refs.track.scrollBy({ left: -240, behavior: 'smooth' }) },
+                next() { $refs.track.scrollBy({ left: 240, behavior: 'smooth' }) },
+                update() {
+                    const t = $refs.track;
+                    this.atStart = t.scrollLeft <= 4;
+                    this.atEnd   = t.scrollLeft + t.clientWidth >= t.scrollWidth - 4;
+                }
+            }"
+            x-init="update(); $refs.track.addEventListener('scroll', () => update())"
+        >
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            @foreach($categories as $category)
-            <a
-                href="{{ $category['url'] }}"
-                class="group relative rounded-2xl overflow-hidden"
-                style="aspect-ratio: 3/4;"
-            >
-                <img
-                    src="{{ $category['image_url'] }}"
-                    alt="{{ $category['name'] }}"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 class="text-white font-bold text-base leading-tight">{{ $category['name'] }}</h3>
-                    <span class="text-amber-400 text-xs mt-1 inline-block">Browse →</span>
+            {{-- Header row: title + nav arrows --}}
+            <div class="flex items-end justify-between mb-10">
+                <div>
+                    <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">Browse</p>
+                    <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Shop by Category</h2>
                 </div>
-            </a>
-            @endforeach
+                <div class="flex gap-2 mb-1">
+                    <button
+                        @click="prev()"
+                        :disabled="atStart"
+                        :class="atStart ? 'opacity-30 cursor-default' : 'hover:bg-amber-400 hover:text-zinc-900 hover:border-amber-400'"
+                        class="w-10 h-10 rounded-full border-2 border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 flex items-center justify-center transition-colors"
+                        aria-label="Previous categories"
+                    >←</button>
+                    <button
+                        @click="next()"
+                        :disabled="atEnd"
+                        :class="atEnd ? 'opacity-30 cursor-default' : 'hover:bg-amber-400 hover:text-zinc-900 hover:border-amber-400'"
+                        class="w-10 h-10 rounded-full border-2 border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 flex items-center justify-center transition-colors"
+                        aria-label="Next categories"
+                    >→</button>
+                </div>
+            </div>
+
+            {{-- Scrollable track --}}
+            <div
+                x-ref="track"
+                class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+                @foreach($categories as $category)
+                <a
+                    href="{{ $category['url'] }}"
+                    class="snap-start flex-none w-44 md:w-52 group relative rounded-2xl overflow-hidden"
+                    style="aspect-ratio: 3/4;"
+                >
+                    <img
+                        src="{{ $category['image_url'] }}"
+                        alt="{{ $category['name'] }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 class="text-white font-bold text-base leading-tight">{{ $category['name'] }}</h3>
+                        <span class="text-amber-400 text-xs mt-1 inline-block">Browse →</span>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+
         </div>
 
     </div>
