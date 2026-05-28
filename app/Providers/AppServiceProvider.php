@@ -2,16 +2,25 @@
 
 namespace App\Providers;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\View;
+use App\Mime\ImageMimeTypeGuesser;
 use App\Models\Course;
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
 use App\Policies\AdministrativePolicy;
+use Carbon\CarbonImmutable;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter as FlyLocalAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
+use League\MimeTypeDetection\ExtensionMimeTypeDetector;
+use Symfony\Component\Mime\MimeTypes;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->extendLocalFilesystemDriver();
+        MimeTypes::getDefault()->registerGuesser(new ImageMimeTypeGuesser);
 
         Gate::policy(User::class, AdministrativePolicy::class);
 
@@ -74,5 +85,37 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    /**
+     * Override the local filesystem driver to use ExtensionMimeTypeDetector,
+     * avoiding a hard dependency on the PHP fileinfo extension.
+     */
+    protected function extendLocalFilesystemDriver(): void
+    {
+        Storage::extend('local', function ($app, $config) {
+            $visibility = PortableVisibilityConverter::fromArray(
+                $config['permissions'] ?? [],
+                $config['directory_visibility'] ?? $config['visibility'] ?? Visibility::PRIVATE
+            );
+
+            $links = ($config['links'] ?? null) === 'skip'
+                ? FlyLocalAdapter::SKIP_LINKS
+                : FlyLocalAdapter::DISALLOW_LINKS;
+
+            $adapter = new FlyLocalAdapter(
+                $config['root'],
+                $visibility,
+                $config['lock'] ?? LOCK_EX,
+                $links,
+                new ExtensionMimeTypeDetector
+            );
+
+            return new FilesystemAdapter(
+                new Filesystem($adapter, $config),
+                $adapter,
+                $config
+            );
+        });
     }
 }

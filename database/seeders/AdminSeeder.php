@@ -19,7 +19,6 @@ class AdminSeeder extends Seeder
                 'name' => 'Admin',
                 'password' => Hash::make('password'),
                 'admin' => true,
-                'type' => 'A',
                 'gender' => 'M',
                 'photo_url' => null,
             ]
