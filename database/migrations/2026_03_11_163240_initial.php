@@ -51,9 +51,7 @@ return new class extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('admin')->default(false);
-            // Types = T- Teacher; S- Student; A= Academic Official
-            $table->enum('type', ['T', 'S', 'A']);
-            $table->enum('gender', ['M', 'F']);
+            $table->string('gender')->nullable();
             $table->string('photo_url')->nullable();
         });
 
@@ -112,7 +110,7 @@ return new class extends Migration
         Schema::dropIfExists('students');
         Schema::dropIfExists('teachers');
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['admin', 'type', 'gender', 'photo_url']);
+            $table->dropColumn(['admin', 'gender', 'photo_url']);
         });
         Schema::dropIfExists('departments');
         Schema::dropIfExists('disciplines');
