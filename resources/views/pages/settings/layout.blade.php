@@ -8,6 +8,12 @@
                         Profile
                     </flux:navlist.item>
 
+                    @cannot('admin')
+                    <flux:navlist.item :href="route('address.edit')" wire:navigate>
+                        Address & Billing
+                    </flux:navlist.item>
+                    @endcannot
+
                     <flux:navlist.item :href="route('security.edit')" wire:navigate>
                         Security
                     </flux:navlist.item>
