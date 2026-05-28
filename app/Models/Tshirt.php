@@ -13,12 +13,12 @@ class Tshirt extends Model
         'description',
         'image_url',
         'price',
-        'is_best_seller',
+        'sales_count',
         'custom',
     ];
 
     protected $casts = [
-        'is_best_seller' => 'boolean',
+        'sales_count' => 'integer',
     ];
 
     public function category()

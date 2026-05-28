@@ -26,7 +26,7 @@ Route::get('/', function () {
 
     return view('home', [
         'categories' => $categories,
-        'bestSellers' => (clone $base)->where('is_best_seller', true)->take(8)->get(),
+        'bestSellers' => (clone $base)->orderByDesc('sales_count')->take(8)->get(),
         'recentlyReleased' => (clone $base)->orderByDesc('created_at')->take(8)->get(),
     ]);
 })->name('home');
