@@ -9,39 +9,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $databaseType = DB::getConfig('driver');
+        $driver = DB::getConfig('driver');
 
-        $this->command->line(
-            'Running seeders for '.$databaseType.' database'
-        );
-
-        // Disable FK checks
-        if ($databaseType === 'sqlite') {
+        if ($driver === 'sqlite') {
             DB::statement('PRAGMA foreign_keys = OFF;');
         } else {
             DB::statement('SET foreign_key_checks=0');
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | ACADEMIC PROJECT SEEDERS (DISABLED TEMPORARILY)
-        |--------------------------------------------------------------------------
-        |
-        | Uncomment later if needed
-        |
-        */
-
-        // $this->call(CursosSeeder::class);
-        // $this->call(DisciplinasSeeder::class);
-        // $this->call(DepartamentosSeeder::class);
-        // $this->call(UsersSeeder::class);
-        // $this->call(GradesSeeder::class);
-
-        /*
-        |--------------------------------------------------------------------------
-        | E-COMMERCE SEEDERS
-        |--------------------------------------------------------------------------
-        */
 
         $this->call([
             AdminSeeder::class,
@@ -50,8 +24,7 @@ class DatabaseSeeder extends Seeder
             TshirtsSeeder::class,
         ]);
 
-        // Enable FK checks
-        if ($databaseType === 'sqlite') {
+        if ($driver === 'sqlite') {
             DB::statement('PRAGMA foreign_keys = ON;');
         } else {
             DB::statement('SET foreign_key_checks=1');
