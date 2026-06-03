@@ -15,7 +15,7 @@ new #[Title('Profile settings')] class extends Component {
 
     public string $name = '';
     public string $email = '';
-    public string $gender = 'M';
+    public string $gender = '';
     public $photo = null;
 
     public function mount(): void
@@ -23,7 +23,7 @@ new #[Title('Profile settings')] class extends Component {
         $user = Auth::user();
         $this->name   = $user->name;
         $this->email  = $user->email;
-        $this->gender = $user->gender ?? 'M';
+        $this->gender = $user->gender;
     }
 
     public function updateProfileInformation(): void
