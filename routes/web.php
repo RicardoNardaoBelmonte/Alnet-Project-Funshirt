@@ -6,12 +6,22 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DisciplineController;
+use App\Http\Controllers\PersonalizedTshirtController;
+use App\Http\Controllers\ShopCartController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TshirtController;
 use App\Models\Category;
 use App\Models\Student;
 use App\Models\Tshirt;
 use Illuminate\Support\Facades\Route;
+
+/* ----- T-SHIRT SHOP CART (no auth required) ----- */
+Route::get('shop/cart', [ShopCartController::class, 'show'])->name('shop.cart.show');
+Route::post('shop/cart/add/{tshirt}', [ShopCartController::class, 'add'])->name('shop.cart.add');
+Route::patch('shop/cart/item', [ShopCartController::class, 'update'])->name('shop.cart.update');
+Route::delete('shop/cart/item', [ShopCartController::class, 'remove'])->name('shop.cart.remove');
+Route::delete('shop/cart', [ShopCartController::class, 'clear'])->name('shop.cart.clear');
 
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', function () {
@@ -22,7 +32,7 @@ Route::get('/', function () {
         'url' => route('categories.show', $cat),
     ]);
 
-    $base = Tshirt::with(['category', 'colors'])->whereNull('customer_id');
+    $base = Tshirt::with(['colors'])->whereNull('customer_id');
 
     return view('home', [
         'categories' => $categories,
@@ -36,6 +46,8 @@ Route::get('/categories', [CategoryController::class, 'index'])
 Route::get('/categories/{category}', [CategoryController::class, 'show'])
     ->name('categories.show');
 
+Route::get('tshirts/{tshirt}', [TshirtController::class, 'show'])->name('tshirts.show');
+
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/support', 'pages.support')->name('support');
 
@@ -44,6 +56,18 @@ Route::get('courses/showcase', [CourseController::class, 'showCase'])
 
 Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])
     ->name('courses.curriculum');
+
+/* ----- PERSONALIZED T-SHIRTS (auth required) ----- */
+Route::middleware(['auth', 'verified'])->prefix('my/tshirts')->name('my.tshirts.')->group(function () {
+    Route::get('/', [PersonalizedTshirtController::class, 'index'])->name('index');
+    Route::get('/create', [PersonalizedTshirtController::class, 'create'])->name('create');
+    Route::post('/', [PersonalizedTshirtController::class, 'store'])->name('store');
+    Route::get('/{tshirt}/image', [PersonalizedTshirtController::class, 'image'])->name('image');
+    Route::get('/{tshirt}/edit', [PersonalizedTshirtController::class, 'edit'])->name('edit');
+    Route::get('/{tshirt}', [PersonalizedTshirtController::class, 'show'])->name('show');
+    Route::put('/{tshirt}', [PersonalizedTshirtController::class, 'update'])->name('update');
+    Route::delete('/{tshirt}', [PersonalizedTshirtController::class, 'destroy'])->name('destroy');
+});
 
 /* ----- PROTECTED ROUTES (verified users only) ----- */
 Route::middleware(['auth', 'verified'])->group(function () {

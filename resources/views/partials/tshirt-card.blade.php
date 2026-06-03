@@ -13,7 +13,7 @@
         {{-- Category badge --}}
         @if($tshirt->category)
             <a href="{{ route('categories.show', $tshirt->category) }}" class="inline-block self-start bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-xs font-medium px-3 py-1 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
-                {{ $tshirt->category->name }}
+                {{ $tshirt->category }}
             </a>
         @endif
 
@@ -41,14 +41,12 @@
         {{-- Price + link --}}
         <footer class="flex items-center justify-between pt-1">
             <strong class="text-amber-500 dark:text-amber-400 font-bold text-base">€{{ number_format($tshirt->price, 2) }}</strong>
-            @if($tshirt->category)
-                <a
-                    href="{{ route('categories.show', $tshirt->category) }}"
-                    class="text-xs text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
-                >
-                    View →
-                </a>
-            @endif
+            <a
+                href="{{ route('tshirts.show', $tshirt) }}"
+                class="text-xs text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
+            >
+                View →
+            </a>
         </footer>
 
     </div>

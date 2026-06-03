@@ -16,10 +16,15 @@
                 <flux:navbar.item :href="route('categories.index')" :current="request()->routeIs('categories.*')" wire:navigate>
                     Categories
                 </flux:navbar.item>
-                <flux:navbar.item href="#" :current="false" class="opacity-60 cursor-not-allowed">
-                    Personalized
-                    <span class="ml-1.5 text-[10px] bg-amber-400 text-zinc-900 font-bold px-1.5 py-0.5 rounded-full leading-none">Soon</span>
-                </flux:navbar.item>
+                @auth
+                    <flux:navbar.item :href="route('my.tshirts.index')" :current="request()->routeIs('my.tshirts.*')" wire:navigate>
+                        Personalized
+                    </flux:navbar.item>
+                @else
+                    <flux:navbar.item :href="route('login')" :current="false">
+                        Personalized
+                    </flux:navbar.item>
+                @endauth
                 <flux:navbar.item :href="route('about')" :current="request()->routeIs('about')" wire:navigate>
                     About Us
                 </flux:navbar.item>
@@ -35,7 +40,18 @@
 
             <flux:spacer />
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-3">
+                {{-- Cart icon --}}
+                <a href="{{ route('shop.cart.show') }}" class="relative flex items-center justify-center w-9 h-9 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" wire:navigate>
+                    <flux:icon.shopping-cart class="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
+                    @php $cartCount = count(session('tshirt_cart', [])); @endphp
+                    @if($cartCount > 0)
+                        <span class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-zinc-900 leading-none">
+                            {{ $cartCount }}
+                        </span>
+                    @endif
+                </a>
+
                 @auth
                     <x-desktop-user-menu class="hidden lg:block" />
                 @else
@@ -59,9 +75,15 @@
                     <flux:sidebar.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.*')" wire:navigate>
                         Categories
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="sparkles" href="#" class="opacity-60">
-                        Personalized <span class="ml-1 text-[10px] bg-amber-400 text-zinc-900 font-bold px-1.5 py-0.5 rounded-full">Soon</span>
-                    </flux:sidebar.item>
+                    @auth
+                        <flux:sidebar.item icon="sparkles" :href="route('my.tshirts.index')" :current="request()->routeIs('my.tshirts.*')" wire:navigate>
+                            Personalized
+                        </flux:sidebar.item>
+                    @else
+                        <flux:sidebar.item icon="sparkles" :href="route('login')" wire:navigate>
+                            Personalized
+                        </flux:sidebar.item>
+                    @endauth
                     <flux:sidebar.item icon="information-circle" :href="route('about')" :current="request()->routeIs('about')" wire:navigate>
                         About Us
                     </flux:sidebar.item>
