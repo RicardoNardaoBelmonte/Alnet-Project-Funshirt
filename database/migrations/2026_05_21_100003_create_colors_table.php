@@ -9,8 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('colors', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->string('name')->primary();
             $table->string('code', 7);
             $table->text('custom')->nullable();
             $table->softDeletes();

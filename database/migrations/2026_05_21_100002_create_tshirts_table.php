@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('tshirts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
-            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
+            $table->string('category')->nullable();
+            $table->foreign('category')->references('name')->on('categories')->nullOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('image_url')->nullable();
