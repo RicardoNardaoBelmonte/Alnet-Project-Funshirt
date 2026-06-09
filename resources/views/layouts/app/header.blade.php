@@ -32,8 +32,8 @@
                     Support
                 </flux:navbar.item>
                 @can('admin')
-                    <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        Dashboard
+                    <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard') || request()->routeIs('admin.*')" wire:navigate>
+                        Admin
                     </flux:navbar.item>
                 @endcan
             </flux:navbar>
@@ -93,6 +93,9 @@
                     @can('admin')
                         <flux:sidebar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                             Dashboard
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="shopping-bag" :href="route('admin.tshirts.index')" :current="request()->routeIs('admin.tshirts.*')" wire:navigate>
+                            T-Shirts (Admin)
                         </flux:sidebar.item>
                     @endcan
                 </flux:sidebar.group>

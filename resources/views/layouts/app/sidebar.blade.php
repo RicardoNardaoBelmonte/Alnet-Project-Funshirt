@@ -31,6 +31,12 @@
                         <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                             {{ __('Dashboard') }}
                         </flux:sidebar.item>
+                        <flux:sidebar.item icon="shopping-bag" :href="route('admin.tshirts.index')" :current="request()->routeIs('admin.tshirts.*')" wire:navigate>
+                            T-Shirts
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="tag" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.*')" wire:navigate>
+                            Categories
+                        </flux:sidebar.item>
                         <flux:sidebar.item icon="building-library" :href="route('departments.index')" :current="request()->routeIs('departments.index')" wire:navigate>
                             Departments
                         </flux:sidebar.item>
