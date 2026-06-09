@@ -11,17 +11,18 @@ class ColorsSeeder extends Seeder
     {
         DB::table('colors')->truncate();
 
+        // code = CSS color value (also the base t-shirt image filename in tshirt_base/)
         DB::table('colors')->insert([
-            ['name' => 'Black',  'code' => '#1a1a1a'],
-            ['name' => 'White',  'code' => '#ffffff'],
-            ['name' => 'Red',    'code' => '#e53e3e'],
-            ['name' => 'Blue',   'code' => '#3182ce'],
-            ['name' => 'Green',  'code' => '#38a169'],
-            ['name' => 'Yellow', 'code' => '#d69e2e'],
-            ['name' => 'Orange', 'code' => '#dd6b20'],
-            ['name' => 'Purple', 'code' => '#805ad5'],
-            ['name' => 'Pink',   'code' => '#d53f8c'],
-            ['name' => 'Navy',   'code' => '#2c5282'],
+            ['code' => 'black',  'name' => 'Black'],
+            ['code' => 'white',  'name' => 'White'],
+            ['code' => 'red',    'name' => 'Red'],
+            ['code' => 'blue',   'name' => 'Blue'],
+            ['code' => 'green',  'name' => 'Green'],
+            ['code' => 'yellow', 'name' => 'Yellow'],
+            ['code' => 'orange', 'name' => 'Orange'],
+            ['code' => 'purple', 'name' => 'Purple'],
+            ['code' => 'pink',   'name' => 'Pink'],
+            ['code' => 'navy',   'name' => 'Navy Blue'],
         ]);
 
         $this->command->info('Colors seeded successfully');

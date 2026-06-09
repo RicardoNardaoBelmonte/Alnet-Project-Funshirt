@@ -10,14 +10,17 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
-            $table->string('status')->default('pending');
-            $table->decimal('total_price', 10, 2)->default(0.00);
+            $table->string('status')->default('pending'); // pending, closed, canceled
+            $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
+            $table->date('date');
+            $table->decimal('total_price', 10, 2);
             $table->text('notes')->nullable();
-            $table->text('address')->nullable();
-            $table->string('payment_type')->nullable();
-            $table->string('payment_ref')->nullable();
-            $table->string('payment_url')->nullable();
+            $table->text('reason_for_cancellation')->nullable();
+            $table->string('nif');
+            $table->text('address');
+            $table->string('payment_type'); // Visa, PayPal, MB WAY
+            $table->string('payment_ref');
+            $table->string('receipt_url')->nullable(); // generated when status → closed
             $table->text('custom')->nullable();
             $table->timestamps();
         });

@@ -9,13 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
+            // id is both PK and FK to users.id — NOT autoincrement
+            $table->unsignedBigInteger('id')->primary();
+            $table->foreign('id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('nif')->nullable();
             $table->text('address')->nullable();
-            $table->string('default_payment_type')->nullable();
+            $table->string('default_payment_type')->nullable(); // Visa, PayPal, MB
             $table->string('default_payment_ref')->nullable();
             $table->text('custom')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

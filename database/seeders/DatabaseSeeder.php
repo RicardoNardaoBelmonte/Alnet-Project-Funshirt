@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             CategoriesSeeder::class,
             ColorsSeeder::class,
+            PricesSeeder::class,
             TshirtsSeeder::class,
         ]);
 

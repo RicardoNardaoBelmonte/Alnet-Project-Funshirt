@@ -8,16 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tshirts', function (Blueprint $table) {
+        Schema::create('tshirt_images', function (Blueprint $table) {
             $table->id();
+            // null = catalogue image; set = private customer image
             $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
-            $table->string('category')->nullable();
-            $table->foreign('category')->references('name')->on('categories')->nullOnDelete();
+            // null = no category; only catalogue images can have a category
+            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('image_url')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->unsignedInteger('sales_count')->default(0);
+            $table->string('image_url');
             $table->text('custom')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -26,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('tshirts');
+        Schema::dropIfExists('tshirt_images');
     }
 };

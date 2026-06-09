@@ -9,8 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('colors', function (Blueprint $table) {
-            $table->string('name')->primary();
-            $table->string('code', 7);
+            // code is the CSS color value (e.g. 'black', 'navy', '#7fffd4')
+            // also used as the base t-shirt image filename in storage/app/public/tshirt_base/
+            $table->string('code')->primary();
+            $table->string('name');
             $table->text('custom')->nullable();
             $table->softDeletes();
             $table->timestamps();
