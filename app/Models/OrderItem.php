@@ -3,25 +3,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderItem extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'order_id',
-        'tshirt_id',
+        'tshirt_image_id',
+        'color_code',
         'size',
-        'quantity',
+        'qty',
         'unit_price',
+        'sub_total',
         'custom',
     ];
 
-    public function order()
+    protected function casts(): array
+    {
+        return [
+            'unit_price' => 'decimal:2',
+            'sub_total' => 'decimal:2',
+        ];
+    }
+
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
 
-    public function tshirt()
+    public function tshirtImage(): BelongsTo
     {
-        return $this->belongsTo(Tshirt::class);
+        return $this->belongsTo(TshirtImage::class);
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(Color::class, 'color_code', 'code');
     }
 }

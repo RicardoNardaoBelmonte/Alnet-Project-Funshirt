@@ -3,11 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
+    use SoftDeletes;
+
+    // id = users.id, set explicitly on creation
+    public $incrementing = false;
+
+    protected $keyType = 'int';
+
     protected $fillable = [
-        'user_id',
+        'id',
         'nif',
         'address',
         'default_payment_type',
@@ -15,13 +25,18 @@ class Customer extends Model
         'custom',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id', 'id');
     }
 
-    public function orders()
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function tshirtImages(): HasMany
+    {
+        return $this->hasMany(TshirtImage::class);
     }
 }
