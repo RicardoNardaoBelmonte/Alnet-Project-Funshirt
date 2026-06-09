@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Color;
-use App\Models\Tshirt;
+use App\Models\Price;
+use App\Models\TshirtImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -20,39 +21,39 @@ class ShopCartController extends Controller
         session(['tshirt_cart' => $cart]);
     }
 
-    private function cartKey(int $tshirtId, ?int $colorId, string $size): string
+    private function cartKey(int $tshirtId, string $colorCode, string $size): string
     {
-        return "{$tshirtId}_".($colorId ?? 'none')."_{$size}";
+        return "{$tshirtId}_{$colorCode}_{$size}";
     }
 
     public function show(): View
     {
         $cart = $this->getCart();
 
-        $tshirtIds = array_unique(array_column($cart, 'tshirt_id'));
+        $tshirtIds = array_unique(array_column($cart, 'tshirt_image_id'));
         $tshirts = $tshirtIds
-            ? Tshirt::with('colors')->whereIn('id', $tshirtIds)->get()->keyBy('id')
+            ? TshirtImage::whereIn('id', $tshirtIds)->get()->keyBy('id')
             : collect();
 
-        $colorIds = array_filter(array_unique(array_column($cart, 'color_id')));
-        $colors = $colorIds
-            ? Color::whereIn('id', $colorIds)->get()->keyBy('id')
+        $colorCodes = array_filter(array_unique(array_column($cart, 'color_code')));
+        $colors = $colorCodes
+            ? Color::whereIn('code', $colorCodes)->get()->keyBy('code')
             : collect();
 
         $total = array_sum(array_map(
-            fn ($item) => $item['unit_price'] * $item['quantity'],
+            fn ($item) => $item['unit_price'] * $item['qty'],
             $cart
         ));
 
         return view('shop.cart', compact('cart', 'tshirts', 'colors', 'total'));
     }
 
-    public function add(Request $request, Tshirt $tshirt): RedirectResponse
+    public function add(Request $request, TshirtImage $tshirt): RedirectResponse
     {
         $validated = $request->validate([
-            'size' => ['required', 'string', 'in:'.implode(',', config('tshirt.sizes'))],
-            'quantity' => ['required', 'integer', 'min:1', 'max:10'],
-            'color_id' => ['nullable', 'integer', 'exists:colors,id'],
+            'size'       => ['required', 'string', 'in:'.implode(',', config('tshirt.sizes'))],
+            'qty'        => ['required', 'integer', 'min:1', 'max:99'],
+            'color_code' => ['required', 'string', 'exists:colors,code'],
         ]);
 
         if ($tshirt->customer_id !== null) {
@@ -62,22 +63,27 @@ class ShopCartController extends Controller
             }
         }
 
-        $size = $validated['size'];
-        $colorId = isset($validated['color_id']) ? (int) $validated['color_id'] : null;
-        $quantity = (int) $validated['quantity'];
-        $key = $this->cartKey($tshirt->id, $colorId, $size);
+        $size      = $validated['size'];
+        $colorCode = $validated['color_code'];
+        $qty       = (int) $validated['qty'];
+        $key       = $this->cartKey($tshirt->id, $colorCode, $size);
+
+        $price     = Price::current();
+        $unitPrice = $tshirt->customer_id === null
+            ? (float) $price->unit_price_catalog
+            : (float) $price->unit_price_own;
 
         $cart = $this->getCart();
 
         if (isset($cart[$key])) {
-            $cart[$key]['quantity'] = min(10, $cart[$key]['quantity'] + $quantity);
+            $cart[$key]['qty'] = $cart[$key]['qty'] + $qty;
         } else {
             $cart[$key] = [
-                'tshirt_id' => $tshirt->id,
-                'color_id' => $colorId,
-                'size' => $size,
-                'quantity' => $quantity,
-                'unit_price' => (float) $tshirt->price,
+                'tshirt_image_id' => $tshirt->id,
+                'color_code'      => $colorCode,
+                'size'            => $size,
+                'qty'             => $qty,
+                'unit_price'      => $unitPrice,
             ];
         }
 
@@ -92,14 +98,19 @@ class ShopCartController extends Controller
     {
         $validated = $request->validate([
             'key' => ['required', 'string'],
-            'quantity' => ['required', 'integer', 'min:1', 'max:10'],
+            'qty' => ['required', 'integer', 'min:0', 'max:99'],
         ]);
 
         $cart = $this->getCart();
-        $key = $validated['key'];
+        $key  = $validated['key'];
+        $qty  = (int) $validated['qty'];
 
         if (isset($cart[$key])) {
-            $cart[$key]['quantity'] = (int) $validated['quantity'];
+            if ($qty === 0) {
+                unset($cart[$key]);
+            } else {
+                $cart[$key]['qty'] = $qty;
+            }
             $this->saveCart($cart);
         }
 

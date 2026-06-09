@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministrativeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
@@ -10,10 +11,10 @@ use App\Http\Controllers\PersonalizedTshirtController;
 use App\Http\Controllers\ShopCartController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminTshirtController;
 use App\Http\Controllers\TshirtController;
-use App\Models\Category;
-use App\Models\Student;
-use App\Models\Tshirt;
 use Illuminate\Support\Facades\Route;
 
 /* ----- T-SHIRT SHOP CART (no auth required) ----- */
@@ -24,28 +25,14 @@ Route::delete('shop/cart/item', [ShopCartController::class, 'remove'])->name('sh
 Route::delete('shop/cart', [ShopCartController::class, 'clear'])->name('shop.cart.clear');
 
 /* ----- PUBLIC ROUTES ----- */
-Route::get('/', function () {
-    $categories = Category::all()->map(fn ($cat) => [
-        'id' => $cat->id,
-        'name' => $cat->name,
-        'image_url' => $cat->image_url,
-        'url' => route('categories.show', $cat),
-    ]);
-
-    $base = Tshirt::with(['colors'])->whereNull('customer_id');
-
-    return view('home', [
-        'categories' => $categories,
-        'bestSellers' => (clone $base)->orderByDesc('sales_count')->take(8)->get(),
-        'recentlyReleased' => (clone $base)->orderByDesc('created_at')->take(8)->get(),
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/categories', [CategoryController::class, 'index'])
     ->name('categories.index');
 Route::get('/categories/{category}', [CategoryController::class, 'show'])
     ->name('categories.show');
 
+Route::get('tshirts', [TshirtController::class, 'index'])->name('tshirts.index');
 Route::get('tshirts/{tshirt}', [TshirtController::class, 'show'])->name('tshirts.show');
 
 Route::view('/about', 'pages.about')->name('about');
@@ -82,36 +69,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('teachers.photo.destroy');
     Route::resource('teachers', TeacherController::class);
 
-    // Student routes
     Route::get('students/my', [StudentController::class, 'myStudents'])
         ->name('students.my');
     Route::delete('students/{student}/photo', [StudentController::class, 'destroyPhoto'])
         ->name('students.photo.destroy');
     Route::resource('students', StudentController::class);
-
-    // Route::delete('students/{student}/photo', [StudentController::class, 'destroyPhoto'])
-    //     ->name('students.photo.destroy')
-    //     ->can('update', 'student');
-    // Route::get('students', [StudentController::class, 'index'])->name('students.index')
-    //     ->can('viewAny', Student::class);
-    // Route::post('students', [StudentController::class, 'store'])
-    //     ->name('students.store')
-    //     ->can('create', Student::class);
-    // Route::get('students/create', [StudentController::class, 'create'])
-    //     ->name('students.create')
-    //     ->can('create', Student::class);
-    // Route::get('students/{student}', [StudentController::class, 'show'])
-    //     ->name('students.show')
-    //     ->can('view', 'student');
-    // Route::put('students/{student}', [StudentController::class, 'update'])
-    //     ->name('students.update')
-    //     ->can('update', 'student');
-    // Route::delete('students/{student}', [StudentController::class, 'destroy'])
-    //     ->name('students.destroy')
-    //     ->can('delete', 'student');
-    // Route::get('students/{student}/edit', [StudentController::class, 'edit'])
-    //     ->name('students.edit')
-    //     ->can('update', 'student');
 
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
         ->name('administratives.photo.destroy');
@@ -122,11 +84,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin routes
     Route::middleware('can:admin')->group(function () {
-        Route::view('dashboard', 'dashboard')->name('dashboard');
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::delete('courses/{course}/image', [CourseController::class, 'destroyImage'])
             ->name('courses.image.destroy');
         Route::resource('courses', CourseController::class)->except(['show']);
         Route::resource('departments', DepartmentController::class);
+        Route::resource('admin/tshirts', AdminTshirtController::class)
+            ->names('admin.tshirts')
+            ->except(['show']);
+        Route::resource('admin/categories', AdminCategoryController::class)
+            ->names('admin.categories')
+            ->except(['show']);
     });
 });
 

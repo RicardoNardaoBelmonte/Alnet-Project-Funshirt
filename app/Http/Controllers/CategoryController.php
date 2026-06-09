@@ -9,7 +9,7 @@ class CategoryController extends Controller
     public function index()
     {
         return view('categories.index', [
-            'categories' => Category::withCount('tshirts')->get(),
+            'categories' => Category::withCount('tshirtImages')->get(),
         ]);
     }
 
@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         return view('categories.show', [
             'category' => $category,
-            'tshirts' => $category->tshirts()->with('colors')->get(),
+            'tshirts'  => $category->tshirtImages()->whereNull('customer_id')->with('category')->latest()->paginate(12),
         ]);
     }
 }
