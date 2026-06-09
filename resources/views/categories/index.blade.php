@@ -24,7 +24,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-4">
                     <h2 class="text-white font-bold text-base leading-tight">{{ $category->name }}</h2>
-                    <span class="text-amber-400 text-xs mt-1 inline-block">{{ $category->tshirts_count }} designs</span>
+                    <span class="text-amber-400 text-xs mt-1 inline-block">{{ $category->tshirt_images_count }} designs</span>
                 </div>
             </a>
             @endforeach

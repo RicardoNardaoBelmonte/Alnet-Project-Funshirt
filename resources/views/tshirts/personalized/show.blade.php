@@ -44,13 +44,45 @@
                 </div>
 
                 <div class="text-3xl font-black text-amber-500 dark:text-amber-400">
-                    €{{ number_format($tshirt->price, 2) }}
+                    €{{ number_format($price->unit_price_own, 2) }}
                     <span class="text-sm font-normal text-zinc-500 dark:text-zinc-400 ml-1">per unit</span>
                 </div>
 
                 {{-- ADD TO CART --}}
                 <form action="{{ route('shop.cart.add', $tshirt) }}" method="POST" class="flex flex-col gap-4">
                     @csrf
+
+                    @if($errors->any())
+                        <flux:callout variant="warning">
+                            <ul class="list-disc list-inside text-sm">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </flux:callout>
+                    @endif
+
+                    {{-- COLOUR --}}
+                    @if($colors->count())
+                        <div>
+                            <label class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Colour</label>
+                            <div class="flex flex-wrap gap-3">
+                                @foreach($colors as $color)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="color_code" value="{{ $color->code }}" class="sr-only peer" required />
+                                        <span
+                                            class="flex items-center justify-center w-8 h-8 rounded-full ring-2 ring-transparent peer-checked:ring-amber-500 peer-checked:ring-offset-2 dark:peer-checked:ring-offset-zinc-900 transition-all"
+                                            style="background-color: {{ $color->code }}"
+                                            title="{{ $color->name }}"
+                                        ></span>
+                                    </label>
+                                @endforeach
+                            </div>
+                            @error('color_code')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    @endif
 
                     <div>
                         <label class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Size</label>
@@ -68,7 +100,7 @@
 
                     <div>
                         <label for="quantity" class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Quantity</label>
-                        <flux:input id="quantity" name="quantity" type="number" min="1" max="10" value="1" class="w-24" />
+                        <flux:input id="qty" name="qty" type="number" min="1" max="99" value="1" class="w-24" />
                     </div>
 
                     <flux:button type="submit" variant="primary" class="w-full py-4 text-base font-bold">

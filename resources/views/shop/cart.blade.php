@@ -42,9 +42,9 @@
 
                     @foreach($cart as $key => $item)
                         @php
-                            $tshirt = $tshirts->get($item['tshirt_id']);
-                            $color = $item['color_id'] ? $colors->get($item['color_id']) : null;
-                            $subtotal = $item['unit_price'] * $item['quantity'];
+                            $tshirt  = $tshirts->get($item['tshirt_image_id']);
+                            $color   = $colors->get($item['color_code']);
+                            $subtotal = $item['unit_price'] * $item['qty'];
                         @endphp
 
                         <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-4 flex gap-4">
@@ -54,8 +54,7 @@
                                 @if($tshirt)
                                     @if($tshirt->customer_id !== null)
                                         <img src="{{ route('my.tshirts.image', $tshirt) }}" alt="{{ $tshirt->name }}"
-                                            class="w-full h-full object-cover"
-                                            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23f4f4f5%22/><text x=%2250%25%22 y=%2255%25%22 font-size=%2230%22 text-anchor=%22middle%22>🎨</text></svg>'" />
+                                            class="w-full h-full object-cover" />
                                     @else
                                         <img src="{{ $tshirt->image_url }}" alt="{{ $tshirt->name }}"
                                             class="w-full h-full object-cover" />
@@ -96,10 +95,11 @@
                                     @method('PATCH')
                                     <input type="hidden" name="key" value="{{ $key }}">
                                     <label class="text-xs text-zinc-500 dark:text-zinc-400">Qty:</label>
-                                    <select name="quantity" onchange="this.form.submit()"
+                                    <select name="qty" onchange="this.form.submit()"
                                         class="text-sm rounded-lg border border-zinc-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-amber-400">
-                                        @for($q = 1; $q <= 10; $q++)
-                                            <option value="{{ $q }}" {{ $item['quantity'] == $q ? 'selected' : '' }}>{{ $q }}</option>
+                                        <option value="0">0 (remove)</option>
+                                        @for($q = 1; $q <= 99; $q++)
+                                            <option value="{{ $q }}" {{ $item['qty'] == $q ? 'selected' : '' }}>{{ $q }}</option>
                                         @endfor
                                     </select>
                                 </form>
@@ -148,8 +148,8 @@
                         <div class="flex flex-col gap-3 text-sm">
                             @foreach($cart as $item)
                                 <div class="flex justify-between text-zinc-600 dark:text-zinc-400">
-                                    <span>{{ $tshirts->get($item['tshirt_id'])?->name ?? 'Item' }} × {{ $item['quantity'] }}</span>
-                                    <span>€{{ number_format($item['unit_price'] * $item['quantity'], 2) }}</span>
+                                    <span>{{ $tshirts->get($item['tshirt_image_id'])?->name ?? 'Item' }} × {{ $item['qty'] }}</span>
+                                    <span>€{{ number_format($item['unit_price'] * $item['qty'], 2) }}</span>
                                 </div>
                             @endforeach
                         </div>

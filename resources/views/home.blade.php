@@ -36,10 +36,16 @@
                 >
                     Shop Now
                 </a>
+                <a
+                    href="{{ route('tshirts.index') }}"
+                    class="border-2 border-white/40 hover:border-white text-white font-bold py-4 px-10 rounded-full text-base transition-colors"
+                >
+                    Browse All
+                </a>
                 @guest
                     <a
                         href="{{ route('register') }}"
-                        class="text-white font-bold py-4 px-10 rounded-full text-base transition-colors"
+                        class="text-white/70 hover:text-white font-bold py-4 px-10 rounded-full text-base transition-colors"
                     >
                         Create Account
                     </a>
@@ -131,10 +137,15 @@
 <section class="bg-white dark:bg-zinc-800 py-20">
     <div class="max-w-7xl mx-auto px-6">
 
-        <header class="mb-16">
-            <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">Top Picks</p>
-            <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Best Sellers</h2>
-        </header>
+        <div class="flex items-end justify-between mb-16">
+            <header>
+                <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">Top Picks</p>
+                <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Best Sellers</h2>
+            </header>
+            <a href="{{ route('tshirts.index') }}" class="text-sm font-semibold text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors whitespace-nowrap mb-2">
+                View all →
+            </a>
+        </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($bestSellers as $tshirt)
@@ -151,10 +162,15 @@
 <section class="bg-zinc-50 dark:bg-zinc-900 py-20">
     <div class="max-w-7xl mx-auto px-6">
 
-        <header class="mb-16">
-            <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">New Arrivals</p>
-            <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Recently Released</h2>
-        </header>
+        <div class="flex items-end justify-between mb-16">
+            <header>
+                <p class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase mb-5">New Arrivals</p>
+                <h2 class="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white leading-tight">Recently Released</h2>
+            </header>
+            <a href="{{ route('tshirts.index') }}" class="text-sm font-semibold text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors whitespace-nowrap mb-2">
+                View all →
+            </a>
+        </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($recentlyReleased as $tshirt)

@@ -29,13 +29,19 @@
                 </a>
             </div>
         @else
-            <p class="text-zinc-500 dark:text-zinc-400 mb-8">{{ $tshirts->count() }} {{ Str::plural('design', $tshirts->count()) }} available</p>
+            <p class="text-zinc-500 dark:text-zinc-400 mb-8">{{ $tshirts->total() }} {{ Str::plural('design', $tshirts->total()) }} available</p>
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @foreach($tshirts as $tshirt)
                     @include('partials.tshirt-card', ['tshirt' => $tshirt])
                 @endforeach
             </div>
+
+            @if($tshirts->hasPages())
+                <div class="mt-12">
+                    {{ $tshirts->links() }}
+                </div>
+            @endif
         @endif
 
     </div>

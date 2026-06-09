@@ -64,7 +64,7 @@
                             </div>
 
                             <footer class="flex items-center justify-between pt-1">
-                                <strong class="text-amber-500 dark:text-amber-400 font-bold text-sm">€{{ number_format($tshirt->price, 2) }}</strong>
+                                <strong class="text-amber-500 dark:text-amber-400 font-bold text-sm">€{{ number_format($price->unit_price_own, 2) }}</strong>
                                 <a href="{{ route('my.tshirts.show', $tshirt) }}"
                                     class="text-xs text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors font-medium">
                                     View →

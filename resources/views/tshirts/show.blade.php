@@ -9,7 +9,7 @@
             <span>→</span>
             @if($tshirt->category)
                 <a href="{{ route('categories.show', $tshirt->category) }}" class="hover:text-zinc-900 dark:hover:text-white transition-colors">
-                    {{ $tshirt->category }}
+                    {{ $tshirt->category->name }}
                 </a>
                 <span>→</span>
             @endif
@@ -36,7 +36,7 @@
                 @if($tshirt->category)
                     <a href="{{ route('categories.show', $tshirt->category) }}"
                         class="self-start bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-xs font-medium px-3 py-1 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
-                        {{ $tshirt->category }}
+                        {{ $tshirt->category->name }}
                     </a>
                 @endif
 
@@ -45,7 +45,7 @@
                 </h1>
 
                 <p class="text-3xl font-bold text-amber-500 dark:text-amber-400">
-                    €{{ number_format($tshirt->price, 2) }}
+                    €{{ number_format($price->unit_price_catalog, 2) }}
                 </p>
 
                 @if($tshirt->description)
@@ -59,18 +59,19 @@
                     @csrf
 
                     {{-- COLOR --}}
-                    @if($tshirt->colors->count())
+                    @if($colors->count())
                         <div>
                             <label class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Colour</label>
                             <div class="flex flex-wrap gap-3" x-data="{ selectedColor: null }">
-                                @foreach($tshirt->colors as $color)
+                                @foreach($colors as $color)
                                     <label class="cursor-pointer">
                                         <input
                                             type="radio"
-                                            name="color_id"
-                                            value="{{ $color->id }}"
+                                            name="color_code"
+                                            value="{{ $color->code }}"
                                             class="sr-only peer"
-                                            x-on:change="selectedColor = {{ $color->id }}"
+                                            x-on:change="selectedColor = '{{ $color->code }}'"
+                                            required
                                         />
                                         <span
                                             class="flex items-center justify-center w-8 h-8 rounded-full ring-2 ring-transparent peer-checked:ring-amber-500 peer-checked:ring-offset-2 dark:peer-checked:ring-offset-zinc-900 transition-all"
@@ -80,7 +81,7 @@
                                     </label>
                                 @endforeach
                             </div>
-                            @error('color_id')
+                            @error('color_code')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -106,19 +107,19 @@
 
                     {{-- QUANTITY --}}
                     <div>
-                        <label for="quantity" class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Quantity</label>
+                        <label for="qty" class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Quantity</label>
                         <div class="flex items-center gap-3">
                             <flux:input
-                                id="quantity"
-                                name="quantity"
+                                id="qty"
+                                name="qty"
                                 type="number"
                                 min="1"
-                                max="10"
-                                value="{{ old('quantity', 1) }}"
+                                max="99"
+                                value="{{ old('qty', 1) }}"
                                 class="w-20"
                             />
                         </div>
-                        @error('quantity')
+                        @error('qty')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -137,12 +138,12 @@
                     @endif
                 </form>
 
-                {{-- COLORS PREVIEW (bottom) --}}
-                @if($tshirt->colors->count())
+                {{-- COLOURS PREVIEW --}}
+                @if($colors->count())
                     <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800">
                         <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-2 uppercase tracking-wide font-semibold">Available Colours</p>
                         <div class="flex flex-wrap gap-2">
-                            @foreach($tshirt->colors as $color)
+                            @foreach($colors as $color)
                                 <span
                                     class="w-5 h-5 rounded-full ring-1 ring-zinc-200 dark:ring-zinc-600"
                                     style="background-color: {{ $color->code }}"

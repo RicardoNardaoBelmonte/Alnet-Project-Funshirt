@@ -18,7 +18,7 @@
             <div>
                 <p class="font-semibold text-amber-700 dark:text-amber-400 text-sm">Personalized price</p>
                 <p class="text-amber-700 dark:text-amber-300 text-sm mt-0.5">
-                    Each personalized t-shirt starts at <strong>€{{ number_format($personalized_price, 2) }}</strong> — your design, your style.
+                    Each personalized t-shirt starts at <strong>€{{ number_format($price->unit_price_own, 2) }}</strong> — your design, your style.
                 </p>
             </div>
         </div>
@@ -126,7 +126,7 @@
                 {{-- PRICE DISPLAY --}}
                 <div class="flex items-center justify-between py-4 border-t border-zinc-100 dark:border-zinc-700">
                     <span class="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Price per unit</span>
-                    <span class="text-xl font-black text-amber-500 dark:text-amber-400">€{{ number_format($personalized_price, 2) }}</span>
+                    <span class="text-xl font-black text-amber-500 dark:text-amber-400">€{{ number_format($price->unit_price_own, 2) }}</span>
                 </div>
 
                 {{-- ACTIONS --}}
