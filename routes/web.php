@@ -12,8 +12,10 @@ use App\Http\Controllers\ShopCartController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminColorController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminTshirtController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\TshirtController;
 use Illuminate\Support\Facades\Route;
 
@@ -95,6 +97,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('admin/categories', AdminCategoryController::class)
             ->names('admin.categories')
             ->except(['show']);
+        Route::resource('admin/colors', AdminColorController::class)
+            ->names('admin.colors')
+            ->except(['show']);
+        Route::patch('admin/colors/{color}/restore', [AdminColorController::class, 'restore'])
+            ->name('admin.colors.restore');
+        Route::get('admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+        Route::patch('admin/users/{user}/block', [AdminUserController::class, 'block'])->name('admin.users.block');
+        Route::patch('admin/users/{user}/unblock', [AdminUserController::class, 'unblock'])->name('admin.users.unblock');
     });
 });
 
