@@ -95,7 +95,16 @@
                             Dashboard
                         </flux:sidebar.item>
                         <flux:sidebar.item icon="shopping-bag" :href="route('admin.tshirts.index')" :current="request()->routeIs('admin.tshirts.*')" wire:navigate>
-                            T-Shirts (Admin)
+                            T-Shirts
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="tag" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.*')" wire:navigate>
+                            Categories
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="swatch" :href="route('admin.colors.index')" :current="request()->routeIs('admin.colors.*')" wire:navigate>
+                            Colors
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="users" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.*')" wire:navigate>
+                            Users
                         </flux:sidebar.item>
                     @endcan
                 </flux:sidebar.group>

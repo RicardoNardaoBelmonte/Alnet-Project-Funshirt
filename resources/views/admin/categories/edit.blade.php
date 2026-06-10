@@ -11,16 +11,6 @@
             </a>
         </div>
 
-        @if($errors->any())
-            <div class="mb-6">
-                <flux:callout variant="warning">
-                    <ul class="list-disc list-inside text-sm">
-                        @foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach
-                    </ul>
-                </flux:callout>
-            </div>
-        @endif
-
         <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-8">
             <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
                 @csrf

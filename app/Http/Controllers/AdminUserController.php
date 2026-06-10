@@ -11,7 +11,7 @@ class AdminUserController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = User::where('user_type', 'C');
+        $query = User::query();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -19,6 +19,10 @@ class AdminUserController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+
+        if ($request->filled('type')) {
+            $query->where('user_type', $request->type);
         }
 
         if ($request->filled('status')) {

@@ -5,7 +5,7 @@
     <div class="p-6 flex flex-col gap-8">
 
         {{-- STAT CARDS --}}
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
 
             <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-6">
                 <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Catalogue T-Shirts</p>
@@ -24,8 +24,19 @@
             </div>
 
             <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-6">
-                <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Customers</p>
-                <p class="text-4xl font-black text-zinc-900 dark:text-white">{{ $totalCustomers }}</p>
+                <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Colors</p>
+                <p class="text-4xl font-black text-zinc-900 dark:text-white">{{ $totalColors }}</p>
+                <a href="{{ route('admin.colors.index') }}" class="mt-3 inline-block text-xs text-amber-500 hover:text-amber-600 font-semibold">
+                    Manage →
+                </a>
+            </div>
+
+            <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-6">
+                <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Users</p>
+                <p class="text-4xl font-black text-zinc-900 dark:text-white">{{ $totalUsers }}</p>
+                <a href="{{ route('admin.users.index') }}" class="mt-3 inline-block text-xs text-amber-500 hover:text-amber-600 font-semibold">
+                    Manage →
+                </a>
             </div>
 
             <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-6">
@@ -73,6 +84,28 @@
                     <div>
                         <p class="font-bold text-sm">Manage Categories</p>
                         <p class="text-xs text-zinc-500 dark:text-zinc-400">Add, edit or remove categories</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.colors.index') }}"
+                    class="flex items-center gap-4 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white rounded-2xl p-5 transition-colors">
+                    <div class="w-10 h-10 bg-zinc-100 dark:bg-zinc-700 rounded-xl flex items-center justify-center flex-none">
+                        <flux:icon.swatch class="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm">Manage Colors</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Add, edit or remove t-shirt colors</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.users.index') }}"
+                    class="flex items-center gap-4 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white rounded-2xl p-5 transition-colors">
+                    <div class="w-10 h-10 bg-zinc-100 dark:bg-zinc-700 rounded-xl flex items-center justify-center flex-none">
+                        <flux:icon.users class="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm">Manage Users</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Block or unblock user accounts</p>
                     </div>
                 </a>
 

@@ -10,21 +10,6 @@
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
-            @can('use-cart')
-                @if(count(session('cart', [])) > 0)
-                <flux:sidebar.nav variant="outline">
-                    <div class="relative inline-flex items-center mr-4">
-                        <div class="-top-0.5 absolute left-6 z-10">
-                            <p class="flex p-3 h-3 w-3 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                                {{ count(session('cart', [])) }}
-                            </p>
-                        </div>
-                        <flux:navlist.item icon="shopping-cart" icon:variant="solid"  :href="route('cart.show')" :current="request()->routeIs('cart.show')" wire:navigate><span class="pl-2">Shopping Cart</span></flux:navlist.item>
-                    </div>
-                </flux:sidebar.nav>
-                @endif
-            @endcan
-
             @can('admin')
                 <flux:sidebar.nav>
                     <flux:sidebar.group heading="Management" class="grid">
@@ -37,69 +22,15 @@
                         <flux:sidebar.item icon="tag" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.*')" wire:navigate>
                             Categories
                         </flux:sidebar.item>
-                        <flux:sidebar.item icon="building-library" :href="route('departments.index')" :current="request()->routeIs('departments.index')" wire:navigate>
-                            Departments
+                        <flux:sidebar.item icon="swatch" :href="route('admin.colors.index')" :current="request()->routeIs('admin.colors.*')" wire:navigate>
+                            Colors
                         </flux:sidebar.item>
-                        <flux:sidebar.item icon="folder-open" :href="route('courses.index')" :current="request()->routeIs('courses.index')" wire:navigate>
-                            Courses
+                        <flux:sidebar.item icon="users" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.*')" wire:navigate>
+                            Users
                         </flux:sidebar.item>
                     </flux:sidebar.group>
                 </flux:sidebar.nav>
             @endcan
-
-            @if(Gate::check('viewShowCase', \App\Models\Course::class) ||
-                Gate::check('viewAny', \App\Models\Discipline::class) ||
-                Gate::check('viewCurriculum', \App\Models\Course::class))
-                <flux:sidebar.nav>
-                    <flux:sidebar.group heading="Academics" class="grid">
-                        @can('viewShowCase', \App\Models\Course::class)
-                            <flux:sidebar.item icon="academic-cap" :href="route('courses.showcase')" :current="request()->routeIs('courses.showcase')" wire:navigate>
-                                Courses
-                            </flux:sidebar.item>
-                        @endcan
-                        @can('viewAny', \App\Models\Discipline::class)
-                            <flux:sidebar.item icon="document" :href="route('disciplines.index')" :current="request()->routeIs('disciplines.index')" wire:navigate>
-                                Disciplines
-                            </flux:sidebar.item>
-                        @endcan
-                        @can('viewCurriculum', \App\Models\Course::class)
-                            <flux:navlist.group heading="Curricula" expandable :expanded="request()->routeIs('courses.curriculum')">
-                                @foreach($sharedCourses as $course)
-                                    <flux:sidebar.item :href="route('courses.curriculum', ['course' => $course])"
-                                        :current="request()->routeIs('courses.curriculum')
-                                            && request()->route('course')?->is($course)" class="font-light font-sm">
-                                        {{ $course->abbreviation }}
-                                    </flux:sidebar.item>
-                                @endforeach
-                            </flux:navlist.group>
-                        @endcan
-                    </flux:sidebar.group>
-                </flux:sidebar.nav>
-            @endif
-
-            @if(Gate::check('viewAny', \App\Models\Teacher::class) ||
-                Gate::check('viewAny', \App\Models\Student::class) ||
-                Gate::check('viewAny', \App\Models\User::class))
-                <flux:sidebar.nav>
-                    <flux:sidebar.group heading="People" class="grid">
-                        @can('viewAny', \App\Models\Teacher::class)
-                            <flux:sidebar.item icon="user" :href="route('teachers.index')" :current="request()->routeIs('teachers.index')" wire:navigate>
-                                Teachers
-                            </flux:sidebar.item>
-                        @endcan
-                        @can('viewAny', \App\Models\Student::class)
-                            <flux:sidebar.item icon="users" :href="route('students.index')" :current="request()->routeIs('students.index')" wire:navigate>
-                                Students
-                            </flux:sidebar.item>
-                        @endcan
-                        @can('viewAny', \App\Models\User::class)
-                            <flux:sidebar.item icon="user-circle" :href="route('administratives.index')" :current="request()->routeIs('administratives.index')" wire:navigate>
-                                Administratives
-                            </flux:sidebar.item>
-                        @endcan
-                    </flux:sidebar.group>
-                </flux:sidebar.nav>
-            @endif
 
             <flux:spacer />
 
@@ -118,92 +49,52 @@
                 <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
                 <flux:spacer />
                 <flux:dropdown position="top" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
-                    icon-trailing="chevron-down"
-                    :avatar="auth()->user()->photo_full_url"
-                />
+                    <flux:profile
+                        :initials="auth()->user()->initials()"
+                        icon-trailing="chevron-down"
+                        :avatar="auth()->user()->photo_full_url"
+                    />
 
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <flux:avatar
-                                    :name="auth()->user()->name"
-                                    :initials="auth()->user()->initials()"
-                                    :src="auth()->user()->photo_full_url"
-                                />
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                                    <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+                    <flux:menu>
+                        <flux:menu.radio.group>
+                            <div class="p-0 text-sm font-normal">
+                                <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+                                    <flux:avatar
+                                        :name="auth()->user()->name"
+                                        :initials="auth()->user()->initials()"
+                                        :src="auth()->user()->photo_full_url"
+                                    />
+                                    <div class="grid flex-1 text-start text-sm leading-tight">
+                                        <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                                        <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </flux:menu.radio.group>
+                        </flux:menu.radio.group>
 
-                    @if(Gate::check('viewMy', \App\Models\Discipline::class) ||
-                        Gate::check('viewMy', \App\Models\Teacher::class) ||
-                        Gate::check('viewMy', \App\Models\Student::class))
-                    <flux:menu.separator />
+                        <flux:menu.separator />
 
-                    <flux:menu.radio.group>
-                        @can('viewMy', \App\Models\Discipline::class)
-                            <flux:menu.item icon="document" :href="route('disciplines.my')"
-                                :current="request()->routeIs('disciplines.my')" wire:navigate>
-                                My Disciplines
+                        <flux:menu.radio.group>
+                            <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
+                                {{ __('Settings') }}
                             </flux:menu.item>
-                        @endcan
-                        @can('viewMy', \App\Models\Teacher::class)
-                            <flux:menu.item icon="user" :href="route('teachers.my')"
-                                :current="request()->routeIs('teachers.my')"  wire:navigate>
-                                My Teachers
+                        </flux:menu.radio.group>
+
+                        <flux:menu.separator />
+
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <flux:menu.item
+                                as="button"
+                                type="submit"
+                                icon="arrow-right-start-on-rectangle"
+                                class="w-full cursor-pointer"
+                                data-test="logout-button"
+                            >
+                                {{ __('Log out') }}
                             </flux:menu.item>
-                        @endcan
-                        @can('viewMy', \App\Models\Student::class)
-                            <flux:menu.item icon="users" :href="route('students.my')"
-                                :current="request()->routeIs('students.my')" wire:navigate>
-                                My Students
-                            </flux:menu.item>
-                        @endcan
-                    </flux:menu.radio.group>
-                    @endif
-
-
-                    <flux:menu.separator />
-
-                    @php
-                        $myRecordRoute = match(auth()->user()->type) {
-                            'S' => auth()->user()->student ? route('students.show', ['student' => auth()->user()->student]) : route('profile.edit'),
-                            'T' => auth()->user()->teacher ? route('teachers.show', ['teacher' => auth()->user()->teacher]) : route('profile.edit'),
-                            'A' => route('administratives.show', ['administrative' => auth()->user()]),
-                            default => route('profile.edit'),
-                        };
-                    @endphp
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="$myRecordRoute " icon="document-text" wire:navigate>
-                            My Record
-                        </flux:menu.item>
-                        <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                            {{ __('Settings') }}
-                        </flux:menu.item>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item
-                            as="button"
-                            type="submit"
-                            icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer"
-                            data-test="logout-button"
-                        >
-                            {{ __('Log out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
+                        </form>
+                    </flux:menu>
                 </flux:dropdown>
             </flux:header>
         @else

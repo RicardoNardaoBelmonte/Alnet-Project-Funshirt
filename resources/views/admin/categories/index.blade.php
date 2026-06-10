@@ -4,14 +4,6 @@
 
     <div class="p-6">
 
-        @if(session('alert-msg'))
-            <div class="mb-6">
-                <flux:callout variant="{{ session('alert-type', 'info') }}">
-                    <div>{!! session('alert-msg') !!}</div>
-                </flux:callout>
-            </div>
-        @endif
-
         <div class="flex items-center justify-between mb-6">
             <p class="text-sm text-zinc-500 dark:text-zinc-400">
                 {{ $categories->total() }} {{ Str::plural('category', $categories->total()) }} total
