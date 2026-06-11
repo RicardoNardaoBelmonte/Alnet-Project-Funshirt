@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminTshirtController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonalizedTshirtController;
 use App\Http\Controllers\ShopCartController;
@@ -18,6 +19,12 @@ Route::post('shop/cart/add/{tshirt}', [ShopCartController::class, 'add'])->name(
 Route::patch('shop/cart/item', [ShopCartController::class, 'update'])->name('shop.cart.update');
 Route::delete('shop/cart/item', [ShopCartController::class, 'remove'])->name('shop.cart.remove');
 Route::delete('shop/cart', [ShopCartController::class, 'clear'])->name('shop.cart.clear');
+
+//CHECKOUT (auth + verified required) //
+Route::middleware(['auth', 'verified'])->prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/', [CheckoutController::class, 'show'])->name('show');
+    Route::post('/', [CheckoutController::class, 'store'])->name('store');
+});
 
 //PUBLIC ROUTES//
 Route::get('/', [HomeController::class, 'index'])->name('home');

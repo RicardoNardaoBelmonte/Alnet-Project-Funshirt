@@ -161,7 +161,7 @@
 
                         <div class="mt-6">
                             @auth
-                                <a href="#"
+                                <a href="{{ route('checkout.show') }}"
                                     class="block w-full text-center bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold py-4 rounded-full transition-colors">
                                     Checkout
                                 </a>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyEmailNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -74,5 +75,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // customers.id = users.id (not autoincrement, id is the FK)
         return $this->hasOne(Customer::class, 'id', 'id');
+    }
+
+    /**
+     * Send the email verification notification using Mailtrip.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new VerifyEmailNotification());
     }
 }
