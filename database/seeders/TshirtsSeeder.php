@@ -16,7 +16,6 @@ class TshirtsSeeder extends Seeder
         $catIds = Category::pluck('id', 'name');
 
         $tshirts = [
-            // ── Streetwear ───────────────────────────────────────────────────
             [
                 'category' => 'Streetwear',
                 'name' => 'Urban Graffiti Tee',
@@ -59,47 +58,6 @@ class TshirtsSeeder extends Seeder
                 'image_url' => '/images/tshirts/streetwear-6.avif',
                 'created_at' => now()->subDays(5),
             ],
-
-            // ── Anime ────────────────────────────────────────────────────────
-            [
-                'category' => 'Anime',
-                'name' => 'Anime Hero Tee',
-                'description' => 'Inspired by legendary anime warriors. Show your passion for anime culture.',
-                'image_url' => 'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(70),
-            ],
-            [
-                'category' => 'Anime',
-                'name' => 'Dragon Print Tee',
-                'description' => 'Eye-catching dragon graphic for true anime fans.',
-                'image_url' => 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(50),
-            ],
-            [
-                'category' => 'Anime',
-                'name' => 'Vintage Anime Graphic Tee',
-                'description' => 'Retro faded print inspired by classic 90s anime series.',
-                'image_url' => 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(7),
-            ],
-
-            // ── Team Jerseys ─────────────────────────────────────────────────
-            [
-                'category' => 'Team Jerseys',
-                'name' => 'Retro Team Jersey Tee',
-                'description' => 'Classic football-inspired jersey tee with retro number print.',
-                'image_url' => 'https://images.unsplash.com/photo-1529374255-868c7b21e825?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(100),
-            ],
-            [
-                'category' => 'Team Jerseys',
-                'name' => 'Champions Edition Tee',
-                'description' => 'Celebrate your team with this premium champions edition jersey tee.',
-                'image_url' => 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(3),
-            ],
-
-            // ── Celebrities ──────────────────────────────────────────────────
             [
                 'category' => 'Celebrities',
                 'name' => 'Rihanna Tribute Tee',
@@ -128,8 +86,6 @@ class TshirtsSeeder extends Seeder
                 'image_url' => '/images/tshirts/celebrities-4.jpg',
                 'created_at' => now()->subDays(4),
             ],
-
-            // ── Basics ───────────────────────────────────────────────────────
             [
                 'category' => 'Basics',
                 'name' => 'Quiksilver Classic Tee',
@@ -150,86 +106,6 @@ class TshirtsSeeder extends Seeder
                 'description' => 'Minimalist Jack & Jones Archive logo tee in sage green.',
                 'image_url' => '/images/tshirts/basics-3.jpg',
                 'created_at' => now()->subDays(8),
-            ],
-
-            // ── Vintage ──────────────────────────────────────────────────────
-            [
-                'category' => 'Vintage',
-                'name' => 'Washed Retro Logo Tee',
-                'description' => 'Acid-washed tee with a faded 80s logo for that perfect vintage look.',
-                'image_url' => 'https://images.unsplash.com/photo-1583744946564-b52d01a7de50?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(55),
-            ],
-            [
-                'category' => 'Vintage',
-                'name' => 'Distressed Band Tee',
-                'description' => 'Heavy-distressed bootleg band tee — worn-in character from day one.',
-                'image_url' => 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(40),
-            ],
-
-            // ── Music ────────────────────────────────────────────────────────
-            [
-                'category' => 'Music',
-                'name' => 'Tour Merch Classic Tee',
-                'description' => 'Concert-style tour merch tee with setlist back print.',
-                'image_url' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(65),
-            ],
-            [
-                'category' => 'Music',
-                'name' => 'Vinyl Record Graphic Tee',
-                'description' => 'Bold vinyl record graphic tee for music lovers.',
-                'image_url' => 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(35),
-            ],
-
-            // ── Sports ───────────────────────────────────────────────────────
-            [
-                'category' => 'Sports',
-                'name' => 'Athletic Performance Tee',
-                'description' => 'Moisture-wicking athletic tee built for training sessions.',
-                'image_url' => 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(75),
-            ],
-            [
-                'category' => 'Sports',
-                'name' => 'Marathon Runner Tee',
-                'description' => 'Lightweight breathable tee for long-distance runners.',
-                'image_url' => 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(45),
-            ],
-
-            // ── Gaming ───────────────────────────────────────────────────────
-            [
-                'category' => 'Gaming',
-                'name' => 'Retro Console Tee',
-                'description' => 'Pixelated retro console graphic — a must for classic gamers.',
-                'image_url' => 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(80),
-            ],
-            [
-                'category' => 'Gaming',
-                'name' => 'GG No Re Tee',
-                'description' => 'Internet-famous gamer phrase tee — wear your competitive spirit.',
-                'image_url' => 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(50),
-            ],
-
-            // ── Nature ───────────────────────────────────────────────────────
-            [
-                'category' => 'Nature',
-                'name' => 'Mountain Peak Tee',
-                'description' => 'Minimalist mountain range print for the outdoor adventurer.',
-                'image_url' => 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(85),
-            ],
-            [
-                'category' => 'Nature',
-                'name' => 'Ocean Wave Tee',
-                'description' => 'Watercolour wave print tee inspired by the open sea.',
-                'image_url' => 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&h=600&fit=crop&auto=format&q=80',
-                'created_at' => now()->subDays(60),
             ],
         ];
 
