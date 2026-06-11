@@ -20,32 +20,6 @@
             </div>
         </div>
 
-        @if(Gate::check('viewMy', \App\Models\Discipline::class) ||
-            Gate::check('viewMy', \App\Models\Teacher::class) ||
-            Gate::check('viewMy', \App\Models\Student::class))
-            <flux:menu.separator />
-
-            <flux:menu.radio.group>
-                @can('viewMy', \App\Models\Discipline::class)
-                <flux:menu.item icon="document" :href="route('disciplines.my')"
-                    :current="request()->routeIs('disciplines.my')" wire:navigate>
-                    My Disciplines
-                </flux:menu.item>
-                @endcan
-                @can('viewMy', \App\Models\Teacher::class)
-                    <flux:menu.item icon="user" :href="route('teachers.my')"
-                    :current="request()->routeIs('teachers.my')" wire:navigate>
-                    My Teachers
-                </flux:menu.item>
-                @endcan
-                @can('viewMy', \App\Models\Student::class)
-                <flux:menu.item icon="users" :href="route('students.my')"
-                    :current="request()->routeIs('students.my')" wire:navigate>
-                    My Students
-                </flux:menu.item>
-                @endcan
-            </flux:menu.radio.group>
-        @endif
         <flux:menu.separator />
 
         <flux:menu.radio.group>
