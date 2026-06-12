@@ -50,7 +50,7 @@ new #[Title('Address & Billing')] class extends Component {
         ]);
 
         Customer::updateOrCreate(
-            ['user_id' => Auth::id()],
+            ['id' => Auth::id()],
             $validated
         );
 
