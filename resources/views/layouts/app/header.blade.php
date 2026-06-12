@@ -20,6 +20,11 @@
                     <flux:navbar.item :href="route('my.tshirts.index')" :current="request()->routeIs('my.tshirts.*')" wire:navigate>
                         Personalized
                     </flux:navbar.item>
+                    @if(auth()->user()->isCustomer())
+                        <flux:navbar.item :href="route('my.orders.index')" :current="request()->routeIs('my.orders.*')" wire:navigate>
+                            Orders
+                        </flux:navbar.item>
+                    @endif
                 @else
                     <flux:navbar.item :href="route('login')" :current="false">
                         Personalized
@@ -79,6 +84,11 @@
                         <flux:sidebar.item icon="sparkles" :href="route('my.tshirts.index')" :current="request()->routeIs('my.tshirts.*')" wire:navigate>
                             Personalized
                         </flux:sidebar.item>
+                        @if(auth()->user()->isCustomer())
+                            <flux:sidebar.item icon="clipboard-document-list" :href="route('my.orders.index')" :current="request()->routeIs('my.orders.*')" wire:navigate>
+                                Orders
+                            </flux:sidebar.item>
+                        @endif
                     @else
                         <flux:sidebar.item icon="sparkles" :href="route('login')" wire:navigate>
                             Personalized
@@ -105,6 +115,9 @@
                         </flux:sidebar.item>
                         <flux:sidebar.item icon="users" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.*')" wire:navigate>
                             Users
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="clipboard-document-list" :href="route('admin.orders.index')" :current="request()->routeIs('admin.orders.*')" wire:navigate>
+                            Orders
                         </flux:sidebar.item>
                     @endcan
                 </flux:sidebar.group>

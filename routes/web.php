@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminColorController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminTshirtController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CategoryController;
@@ -31,6 +33,12 @@ Route::get('tshirts/{tshirt}', [TshirtController::class, 'show'])->name('tshirts
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/support', 'pages.support')->name('support');
 
+//CUSTOMER ORDERS (auth required)//
+Route::middleware(['auth', 'verified'])->prefix('my/orders')->name('my.orders.')->group(function () {
+    Route::get('/', [OrderController::class, 'index'])->name('index');
+    Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+});
+
 //PERSONALIZED T-SHIRTS (auth required)//
 Route::middleware(['auth', 'verified'])->prefix('my/tshirts')->name('my.tshirts.')->group(function () {
     Route::get('/', [PersonalizedTshirtController::class, 'index'])->name('index');
@@ -50,6 +58,10 @@ Route::middleware(['auth', 'verified', 'can:admin'])->group(function () {
     Route::resource('admin/categories', AdminCategoryController::class)->names('admin.categories')->except(['show']);
     Route::resource('admin/colors', AdminColorController::class)->names('admin.colors')->except(['show']);
     Route::patch('admin/colors/{color}/restore', [AdminColorController::class, 'restore'])->name('admin.colors.restore');
+    Route::get('admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('admin/orders/{order}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
+    Route::patch('admin/orders/{order}/close', [AdminOrderController::class, 'close'])->name('admin.orders.close');
+    Route::patch('admin/orders/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('admin.orders.cancel');
     Route::get('admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::patch('admin/users/{user}/block', [AdminUserController::class, 'block'])->name('admin.users.block');
     Route::patch('admin/users/{user}/unblock', [AdminUserController::class, 'unblock'])->name('admin.users.unblock');
