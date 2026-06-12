@@ -28,6 +28,9 @@
                         <flux:sidebar.item icon="users" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.*')" wire:navigate>
                             Users
                         </flux:sidebar.item>
+                        <flux:sidebar.item icon="clipboard-document-list" :href="route('admin.orders.index')" :current="request()->routeIs('admin.orders.*')" wire:navigate>
+                            Orders
+                        </flux:sidebar.item>
                     </flux:sidebar.group>
                 </flux:sidebar.nav>
             @endcan
