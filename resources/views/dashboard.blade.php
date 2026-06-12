@@ -150,13 +150,13 @@
                                     <td class="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
                                         {{ $order->customer->user->name ?? '—' }}
                                     </td>
-                                    <td class="px-4 py-3 text-zinc-500">{{ $order->date }}</td>
+                                    <td class="px-4 py-3 text-zinc-500">{{ $order->date?->format('d/m/Y') ?? '—' }}</td>
                                     <td class="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
                                         €{{ number_format($order->total_price, 2) }}
                                     </td>
                                     <td class="px-4 py-3">
                                         @php
-                                            $colors = ['pending' => 'bg-amber-100 text-amber-700', 'paid' => 'bg-blue-100 text-blue-700', 'shipped' => 'bg-green-100 text-green-700', 'cancelled' => 'bg-red-100 text-red-700'];
+                                            $colors = ['pending' => 'bg-amber-100 text-amber-700', 'closed' => 'bg-green-100 text-green-700', 'canceled' => 'bg-red-100 text-red-700'];
                                             $color = $colors[$order->status] ?? 'bg-zinc-100 text-zinc-700';
                                         @endphp
                                         <span class="px-2 py-0.5 rounded-full text-xs font-bold {{ $color }}">
