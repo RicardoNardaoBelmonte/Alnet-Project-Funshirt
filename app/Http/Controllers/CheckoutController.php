@@ -144,7 +144,7 @@ class CheckoutController extends Controller
         session()->forget('tshirt_cart');
 
         // Redirect with success message
-        return redirect()->route('home')
+        return redirect()->route('my.orders.index')
             ->with('alert-msg', 'Order created successfully! Check your email for the confirmation.')
             ->with('alert-type', 'success');
     }
