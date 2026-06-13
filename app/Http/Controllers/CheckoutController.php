@@ -90,8 +90,10 @@ class CheckoutController extends Controller
         }
 
         // Validate checkout form
+        // Validate checkout form. The system expects payment types: Visa, PayPal, MB WAY.
+        // Adjust validation to accept these exact values.
         $validated = $request->validate([
-            'payment_type' => ['required', 'string', 'in:card,bank_transfer,cash'],
+            'payment_type' => ['required', 'string', 'in:Visa,PayPal,MB WAY'],
             'notes' => ['nullable', 'string', 'max:500'],
         ]);
 

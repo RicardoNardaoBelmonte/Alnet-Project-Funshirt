@@ -86,35 +86,35 @@
 
                         <div class="space-y-3">
                             <label class="flex items-center p-3 border border-zinc-200 dark:border-zinc-600 rounded-lg cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors"
-                                :class="{ 'border-amber-400 bg-amber-50 dark:bg-amber-900/20': $wire.payment_type === 'card' }">
-                                <input type="radio" name="payment_type" value="card" required
+                                :class="{ 'border-amber-400 bg-amber-50 dark:bg-amber-900/20': $wire.payment_type === 'Visa' }">
+                                <input type="radio" name="payment_type" value="Visa" required
                                     class="w-4 h-4 text-amber-400 focus:ring-amber-500"
-                                    @if(old('payment_type') === 'card' || !old('payment_type')) checked @endif />
+                                    @if(old('payment_type') === 'Visa' || !old('payment_type')) checked @endif />
                                 <div class="ml-3">
-                                    <p class="font-medium text-zinc-900 dark:text-white">Credit/Debit Card</p>
+                                    <p class="font-medium text-zinc-900 dark:text-white">Visa</p>
                                     <p class="text-xs text-zinc-500 dark:text-zinc-400">Pay securely with your card</p>
                                 </div>
                             </label>
 
                             <label class="flex items-center p-3 border border-zinc-200 dark:border-zinc-600 rounded-lg cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors"
-                                :class="{ 'border-amber-400 bg-amber-50 dark:bg-amber-900/20': $wire.payment_type === 'bank_transfer' }">
-                                <input type="radio" name="payment_type" value="bank_transfer" required
+                                :class="{ 'border-amber-400 bg-amber-50 dark:bg-amber-900/20': $wire.payment_type === 'PayPal' }">
+                                <input type="radio" name="payment_type" value="PayPal" required
                                     class="w-4 h-4 text-amber-400 focus:ring-amber-500"
-                                    @if(old('payment_type') === 'bank_transfer') checked @endif />
+                                    @if(old('payment_type') === 'PayPal') checked @endif />
                                 <div class="ml-3">
-                                    <p class="font-medium text-zinc-900 dark:text-white">Bank Transfer</p>
+                                    <p class="font-medium text-zinc-900 dark:text-white">PayPal</p>
                                     <p class="text-xs text-zinc-500 dark:text-zinc-400">Direct bank transfer</p>
                                 </div>
                             </label>
 
                             <label class="flex items-center p-3 border border-zinc-200 dark:border-zinc-600 rounded-lg cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors"
-                                :class="{ 'border-amber-400 bg-amber-50 dark:bg-amber-900/20': $wire.payment_type === 'cash' }">
-                                <input type="radio" name="payment_type" value="cash" required
+                                :class="{ 'border-amber-400 bg-amber-50 dark:bg-amber-900/20': $wire.payment_type === 'MB WAY' }">
+                                <input type="radio" name="payment_type" value="MB WAY" required
                                     class="w-4 h-4 text-amber-400 focus:ring-amber-500"
-                                    @if(old('payment_type') === 'cash') checked @endif />
-                                <div class="ml-3">
-                                    <p class="font-medium text-zinc-900 dark:text-white">Cash on Delivery</p>
-                                    <p class="text-xs text-zinc-500 dark:text-zinc-400">Pay when you receive the order</p>
+                                    @if(old('payment_type') === 'MB WAY') checked @endif />
+                                    <div class="ml-3">
+                                        <p class="font-medium text-zinc-900 dark:text-white">MB WAY</p>
+                                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Pay via MB WAY mobile payment</p>
                                 </div>
                             </label>
                         </div>
@@ -124,20 +124,19 @@
                         @enderror
                     </div>
 
-                    {{-- PAYMENT REFERENCE (for bank transfer) --}}
-                    <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-6" x-show="payment_type === 'bank_transfer'">
-                        <h2 class="text-lg font-bold text-zinc-900 dark:text-white mb-4">Bank Transfer Reference</h2>
-
-                        <div>
-                            <label for="payment_ref" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-                                Reference/Note (optional)
-                            </label>
-                            <textarea name="payment_ref" id="payment_ref" rows="2"
-                                class="w-full px-3 py-2 border border-zinc-200 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
-                                placeholder="e.g., Invoice number or reference">{{ old('payment_ref') }}</textarea>
-                            <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                                This will help us match your payment to this order
-                            </p>
+                        <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 p-6" x-show="payment_type === 'MB WAY'">
+                            <h2 class="text-lg font-bold text-zinc-900 dark:text-white mb-4">Bank Transfer Reference</h2>
+                            <div>
+                                <label for="payment_ref" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                                    Reference/Note (optional)
+                                </label>
+                                <textarea name="payment_ref" id="payment_ref" rows="2"
+                                    class="w-full px-3 py-2 border border-zinc-200 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                    placeholder="e.g., Invoice number or reference">{{ old('payment_ref') }}</textarea>
+                                <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                                    This will help us match your payment to this order
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -235,7 +234,8 @@
         function togglePaymentRef() {
             const checked = document.querySelector('input[name="payment_type"]:checked');
             if (paymentRefDiv) {
-                if (checked && checked.value === 'bank_transfer') {
+                // Show reference field only for MB WAY payments
+                if (checked && checked.value === 'MB WAY') {
                     paymentRefDiv.style.display = '';
                 } else {
                     paymentRefDiv.style.display = 'none';
